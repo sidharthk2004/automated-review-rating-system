@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Review Score Estimator: Model A vs Model B</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <h1>Review Score Estimator: Model A vs Model B</h1>
+    <p class="subtitle">Prediction Battle 🤖⚔🤖</p>
+    <div class="pills">
+      <span class="pill pill-red">Model A: 📉 Class-Imbalanced</span>
+      <span class="pill pill-green">Model B: 📈 Class-Balanced</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <form method="POST" class="card input-card">
+      <label for="review" class="label">🖋 Review Dropbox 📦</label>
+      <textarea id="review" name="review" placeholder="Type your review here...">{{ review_text }}</textarea>
+      <button type="submit" class="btn">Predict</button>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flash">
+            {% for category, message in messages %}
+              <li class="flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </form>
+
+    {% if result_a or result_b %}
+    <section class="results">
+      {% if result_a %}
+      <div class="card model-card border-red">
+        <h2>{{ result_a.title }}</h2>
+        <div class="pred">
+          <div class="pred-label">Predicted Rating</div>
+          <div class="pred-value">{{ result_a.pred }}</div>
+          <div class="stars">{{ result_a.stars }}</div>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if result_b %}
+      <div class="card model-card border-green">
+        <h2>{{ result_b.title }}</h2>
+        <div class="pred">
+          <div class="pred-label">Predicted Rating</div>
+          <div class="pred-value">{{ result_b.pred }}</div>
+          <div class="stars">{{ result_b.stars }}</div>
+        </div>
+      </div>
+      {% endif %}
+    </section>
+    {% endif %}
+  </main>
+
+  <footer class="footer">
+    <small>Flask • joblib models • Vectorizers</small>
+  </footer>
+</body>
+</html>

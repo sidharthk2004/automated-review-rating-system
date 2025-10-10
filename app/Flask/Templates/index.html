@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review Rating Comparator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1> Review Score Estimator </h1>
+        <p class="subtitle">
+            Compare two BiLSTM models!
+        </p>
+
+        <form method="POST">
+            <textarea name="review" placeholder="✍ Write your review here...">{{ review }}</textarea>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if pred_a %}
+        <div class="results">
+            <div class="card">
+                <h2>Model A (Imbalanced)</h2>
+                <p><strong>Predicted Rating:</strong> {{ pred_a }}</p>
+                <p class="stars">{{ stars_a }}</p>
+
+                <div class="probabilities">
+                    <h3>Class Probabilities</h3>
+                    <table>
+                        <tr>
+                            <th>Class</th>
+                            <th>Probability (%)</th>
+                        </tr>
+                        {% for cls, prob in probs_a.items() %}
+                        <tr>
+                            <td>{{ cls }}</td>
+                            <td>{{ prob }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Model B (Balanced)</h2>
+                <p><strong>Predicted Rating:</strong> {{ pred_b }}</p>
+                <p class="stars">{{ stars_b }}</p>
+
+                <div class="probabilities">
+                    <h3>Class Probabilities</h3>
+                    <table>
+                        <tr>
+                            <th>Class</th>
+                            <th>Probability (%)</th>
+                        </tr>
+                        {% for cls, prob in probs_b.items() %}
+                        <tr>
+                            <td>{{ cls }}</td>
+                            <td>{{ prob }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
